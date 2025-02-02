@@ -31,9 +31,9 @@ public class PaymentSystem extends JFrame implements ActionListener
         
         
         l2=new JLabel("Mode Of Payment:-");
-        l2.setBounds(10, 11, 12, 15);
+        l2.setBounds(10, 11, 12, 13);//neel edit
         l3=new JLabel("BrandModel");
-        l3.setBounds(50, 51, 59, 61);
+        l3.setBounds(50, 51, 59, 60);
         l4=new JLabel("Car Name");
         
         l5=new JLabel("Car Seater");
@@ -188,6 +188,12 @@ public class PaymentSystem extends JFrame implements ActionListener
         
         
     }
-            //Final done by ashish
+            
+    
+    
+    
+   
+    //final testing done
+    
 }
 
