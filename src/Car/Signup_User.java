@@ -165,7 +165,7 @@ l1.add(t6);
         t9.setEditable(false); // Age should be auto-calculated
         l1.add(t9);
 
-        //  **Automatically Calculate Age When DOB is Selected**
+        // **Automatically Calculate Age When DOB is Selected**
         ActionListener dobListener = e -> calculateAge();
         dayBox.addActionListener(dobListener);
         monthBox.addActionListener(dobListener);
@@ -223,6 +223,11 @@ l1.add(t6);
         Random r = new Random();
         String user_id = "" + Math.abs(r.nextInt() % 100000);
 
+         //Driving License Validation
+        if (!drivingLicense.equals("Yes")) {
+            JOptionPane.showMessageDialog(null, "You must have a Driving License to sign up.");
+            return;
+        }
         // Email Validation
         String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
         if (!email.matches(emailRegex)) {
@@ -252,7 +257,7 @@ l1.add(t6);
 }
 
 
-    //  **Method to Calculate Age from DOB Selection**
+    // Method to Calculate Age from DOB Selection**
     public void calculateAge() {
         try {
             int day = Integer.parseInt((String) dayBox.getSelectedItem());
@@ -274,4 +279,4 @@ l1.add(t6);
         new Signup_User();
     }
 }
-//successfully done by shreya 2/9/2025 
+//successfully done by shreya 2/9/2025  
