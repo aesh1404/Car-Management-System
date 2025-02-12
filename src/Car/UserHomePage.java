@@ -12,6 +12,7 @@ public class UserHomePage extends JFrame implements ActionListener
     UserHomePage() 
     {
         
+        
         //super("Car booking page for User");
         this.setTitle("User Car Booking Home Page");
         setSize(1280,780);
@@ -124,6 +125,19 @@ public class UserHomePage extends JFrame implements ActionListener
         
         add(l1);
     }
+     public void updateCarStatus() 
+         {
+            try 
+            {
+                ConnectionClass obj = new ConnectionClass();
+                String q = "UPDATE add_car SET carstatus='Available' WHERE carno IN (SELECT car_no FROM car_booking WHERE return_date < NOW())";
+                obj.stmt.executeUpdate(q);
+            } 
+            catch (Exception ex) 
+            {
+                ex.printStackTrace();
+            }
+        }
      public void actionPerformed(ActionEvent e)
     {
         String comnd=e.getActionCommand();
@@ -158,6 +172,9 @@ public class UserHomePage extends JFrame implements ActionListener
     }
      public static void main(String[] args) 
      {
+         UserHomePage user =new UserHomePage();
+         user.updateCarStatus();
         new UserHomePage().setVisible(true);
      }
+     //Changed by ashish 12-02-2025
 }
