@@ -16,11 +16,15 @@ public class CheckBill extends JFrame implements ActionListener
     JButton b1,b2;
     JLabel l1,l2;
     JTextArea ta;
+    
     Choice ch1,ch2;
     JPanel p1,p2;
     Font f;
     String q;
-     CheckBill() {
+   
+
+    CheckBill() 
+    {
     
          this.setTitle("Generate Bill Slip");
          setLocation(100, 100);
@@ -106,7 +110,9 @@ public class CheckBill extends JFrame implements ActionListener
                  }
                      
              }
-        });    
+        });   
+        
+       
     }
      public void actionPerformed(ActionEvent e){
      
@@ -118,7 +124,7 @@ public class CheckBill extends JFrame implements ActionListener
                    ConnectionClass obj=new ConnectionClass();
                      String user_name=ch1.getSelectedItem();
                      String booking_id=ch2.getSelectedItem();
-                     String q3="select *from car_booking where customer_username='"+user_name+"' and booking_id='"+booking_id+"'";
+                     String q3="select * from car_booking where customer_username='"+user_name+"' and booking_id='"+booking_id+"'";
                      ResultSet rest3=obj.stmt.executeQuery(q3);
                      while (rest3.next()) {                      
                             ta.append("\n\n Customer Name:"+rest3.getString("customer_name"));
@@ -134,6 +140,10 @@ public class CheckBill extends JFrame implements ActionListener
                             ta.append("\n\n Total Days:"+rest3.getString("total_days"));
                             ta.append("\n\n Booking Date:"+rest3.getString("booking_date"));
                             
+                             // Fetch return date
+                            String returnDate = rest3.getString("return_date");
+                            ta.append("\n\n Return Date: " + returnDate);
+                           
                             ta.append("\n---------------------------------------------------\n");
                           
                             //car_rent colum convert the float
@@ -144,7 +154,7 @@ public class CheckBill extends JFrame implements ActionListener
                             
                             ta.append(("\n Total payment:"+total_payment));
                             ta.append("\n Tax:"+tax);
-                            
+                           
                          }
                   }
                    
@@ -165,7 +175,11 @@ public class CheckBill extends JFrame implements ActionListener
             }
      }
      public static void main(String[] args) {
+        
+        
         new CheckBill().setVisible(true);
+        
         }
-     
+     //Successfully done by Ashish 12-02-2025
+     //In this only return date print from Car_Booking so you need to add column return_date in car_booking
 }
