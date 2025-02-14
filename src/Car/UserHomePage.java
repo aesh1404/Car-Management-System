@@ -154,7 +154,7 @@ public class UserHomePage extends JFrame implements ActionListener
         }
         else if(comnd.equals("View Booking History"))
         {
-            new ViewBookingHistory().setVisible(true);
+            new ViewUserBookingHistory().setVisible(true);
         }
         else if(comnd.equals("View Brand"))
         {
@@ -170,7 +170,12 @@ public class UserHomePage extends JFrame implements ActionListener
         }
         else if(comnd.equals("Exit"))
         {
-            System.exit(0);
+            int choice = JOptionPane.showConfirmDialog(this, "Are you sure you want to logout?", 
+                          "Logout", JOptionPane.YES_NO_OPTION);
+        if (choice == JOptionPane.YES_OPTION) {
+            this.dispose(); // Close only AdminHomePage
+            new Login(); // Reopen the Login Page
+                }
         }
     }
      
