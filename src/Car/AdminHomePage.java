@@ -15,7 +15,7 @@ public class AdminHomePage extends JFrame implements ActionListener
         this.setTitle("Car booking page for admin");
         setSize(1280,780);
         
-        ImageIcon img=new ImageIcon(ClassLoader.getSystemResource("Car\\Icons\\AdminHomePage.jpeg"));
+       ImageIcon img = new ImageIcon(ClassLoader.getSystemResource("Car/Icons/AdminHomePage.jpeg"));
         Image i1=img.getImage().getScaledInstance(1600, 1000, Image.SCALE_SMOOTH);
         ImageIcon img1=new ImageIcon(i1);
         l1=new JLabel(img1);
@@ -25,17 +25,17 @@ public class AdminHomePage extends JFrame implements ActionListener
         
         //Second Create Menu in Menubar And Third create Items and adds in menu.
         JMenu m1=new JMenu("User Profile");
-        JMenuItem mi1=new JMenuItem("Update User Details");
+      
         JMenuItem mi2=new JMenuItem("View User Profile");
         
-        m1.add(mi1);
+       
         m1.add(mi2);
        
         JMenu m2=new JMenu("Booking History");
-        JMenuItem mi3=new JMenuItem("Add New Booking");
+        
         JMenuItem mi4=new JMenuItem("View Booking History");
         
-        m2.add(mi3);
+       
         m2.add(mi4);
         
         JMenu m3=new JMenu("Car Brand");
@@ -52,10 +52,7 @@ public class AdminHomePage extends JFrame implements ActionListener
         m4.add(mi7);
         m4.add(mi8);
         
-        JMenu m5=new JMenu("Cancellation");
-        JMenuItem mi9=new JMenuItem("Cancel Booking");
-        
-        m5.add(mi9);
+      
         
         JMenu m6=new JMenu("Bill");
         JMenuItem mi10=new JMenuItem("Check Bill");
@@ -71,7 +68,6 @@ public class AdminHomePage extends JFrame implements ActionListener
         mb.add(m2);
         mb.add(m3);
         mb.add(m4);
-        mb.add(m5);
         mb.add(m6);
         mb.add(m7);
         
@@ -81,31 +77,26 @@ public class AdminHomePage extends JFrame implements ActionListener
         m2.setForeground(Color.WHITE);
         m3.setForeground(Color.WHITE);
         m4.setForeground(Color.WHITE);
-        m5.setForeground(Color.WHITE);
         m6.setForeground(Color.WHITE);
         m7.setForeground(Color.RED);
         
-       mi1.setBackground(Color.BLACK);
+       
        mi2.setBackground(Color.BLACK);
-       mi3.setBackground(Color.BLACK);
        mi4.setBackground(Color.BLACK);
        mi5.setBackground(Color.BLACK);
        mi6.setBackground(Color.BLACK);
        mi7.setBackground(Color.BLACK);
        mi8.setBackground(Color.BLACK);
-       mi9.setBackground(Color.BLACK);
        mi10.setBackground(Color.BLACK);
        mi11.setBackground(Color.BLACK);
        
-       mi1.setForeground(Color.ORANGE);
+       
        mi2.setForeground(Color.ORANGE);
-       mi3.setForeground(Color.ORANGE);
        mi4.setForeground(Color.ORANGE);
        mi5.setForeground(Color.ORANGE);
        mi6.setForeground(Color.ORANGE);
        mi7.setForeground(Color.ORANGE);
        mi8.setForeground(Color.ORANGE);
-       mi9.setForeground(Color.ORANGE);
        mi10.setForeground(Color.ORANGE);
        mi11.setForeground(Color.RED);
        
@@ -117,32 +108,27 @@ public class AdminHomePage extends JFrame implements ActionListener
        m2.setFont(f);
        m3.setFont(f);
        m4.setFont(f);
-       m5.setFont(f);
        m6.setFont(f);
        m7.setFont(f);
        
-       mi1.setFont(f1);
+      
        mi2.setFont(f1);
-       mi3.setFont(f1);
        mi4.setFont(f1);
        mi5.setFont(f1);
        mi6.setFont(f1);
        mi7.setFont(f1);
        mi8.setFont(f1);
-       mi9.setFont(f1);
        mi10.setFont(f1);
        mi11.setFont(f1);
        
        //Add Action on click Menu Items 
-       mi1.addActionListener(this);
+       
        mi2.addActionListener(this);
-       mi3.addActionListener(this);
        mi4.addActionListener(this);
        mi5.addActionListener(this);
        mi6.addActionListener(this);
        mi7.addActionListener(this);
        mi8.addActionListener(this);
-       mi9.addActionListener(this);
        mi10.addActionListener(this);
        mi11.addActionListener(this);
        
@@ -153,7 +139,7 @@ public class AdminHomePage extends JFrame implements ActionListener
         
         add(l1);
     }
-     public void updateCarStatus() 
+    public void updateCarStatus() 
          {
             try 
             {
@@ -166,24 +152,16 @@ public class AdminHomePage extends JFrame implements ActionListener
                 ex.printStackTrace();
             }
         }
+    
     public void actionPerformed(ActionEvent e)
     {
         String comnd=e.getActionCommand();
-        if(comnd.equals("Update User Details"))
-        {
-            System.out.println("update User Profile");
-            new UpdateUserDetails().setVisible(true);
-        }
-        else if(comnd.equals("View User Profile"))
+        if(comnd.equals("View User Profile"))
         {
             System.out.println("View User Profile");
             new ViewUser().setVisible(true);
         }
-        else if(comnd.equals("Add New Booking"))
-        {
-            new AddNewBooking().setVisible(true);
-        }
-          else if(comnd.equals("View Booking History"))
+         else if(comnd.equals("View Booking History"))
         {
             new ViewBookingHistory().setVisible(true);
         }
@@ -203,24 +181,33 @@ public class AdminHomePage extends JFrame implements ActionListener
         {
             new ViewCar().setVisible(true);
         }
-         else if(comnd.equals("Cancel Booking"))
-        {
-            System.out.println("Page is missing.");
-        }
+      
           else if(comnd.equals("Check Bill"))
         {
             new CheckBill().setVisible(true);
         }
-        else if(comnd.equals("Exit"))
-        {
-            System.exit(0);
+        else if (comnd.equals("Exit")) {
+            
+        int choice = JOptionPane.showConfirmDialog(this, "Are you sure you want to logout?", 
+                          "Logout", JOptionPane.YES_NO_OPTION);
+        if (choice == JOptionPane.YES_OPTION) {
+            this.dispose(); // Close only AdminHomePage
+            new Login(); // Reopen the Login Page
+                }
         }
+
     }
-    
+     
     public static void main(String[] args) {
         AdminHomePage admin = new AdminHomePage();
         admin.updateCarStatus();
         new AdminHomePage().setVisible(true);
     }
-    //Changed by ashish 12-02-2025
+    
 }
+
+    
+ 
+ //Changed by ashish 12-02-2025
+
+// change by shreya 13/2/25 
