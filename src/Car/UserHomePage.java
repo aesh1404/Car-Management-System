@@ -9,13 +9,16 @@ public class UserHomePage extends JFrame implements ActionListener
     JLabel l1;
     Font f,f1;
 
-    UserHomePage() 
+    private String loggedInUser;// Store the logged-in user
+    UserHomePage(String username) 
     {
         
         
         //super("Car booking page for User");
         this.setTitle("User Car Booking Home Page");
         setSize(1280,780);
+        
+        this.loggedInUser = username;
         
         ImageIcon img=new ImageIcon(ClassLoader.getSystemResource("Car\\Icons\\UserHomePage.jpg"));
         Image i1=img.getImage().getScaledInstance(1500,1100, Image.SCALE_SMOOTH);
@@ -110,7 +113,7 @@ public class UserHomePage extends JFrame implements ActionListener
        mi11.setFont(f1);
        
        //Add Action on click Menu Items 
-       mi1.addActionListener(this);
+       mi1.addActionListener(e -> new UpdateUserDetails(loggedInUser).setVisible(true));
        mi3.addActionListener(this);
        mi4.addActionListener(this);
        mi6.addActionListener(this);
@@ -143,11 +146,11 @@ public class UserHomePage extends JFrame implements ActionListener
         String comnd=e.getActionCommand();
         if(comnd.equals("Update & View My Details"))
         {
-            new UpdateUserDetails().setVisible(true);
+            new UpdateUserDetails(loggedInUser).setVisible(true);
         }
         else if(comnd.equals("Add New Booking"))
         {
-            new AddNewBooking().setVisible(true);
+            new AddNewBooking(loggedInUser).setVisible(true);
         }
         else if(comnd.equals("View Booking History"))
         {
@@ -155,26 +158,28 @@ public class UserHomePage extends JFrame implements ActionListener
         }
         else if(comnd.equals("View Brand"))
         {
-            new ViewBrand().setVisible(true);
+            new ViewUserBrand().setVisible(true);
         }
         else if(comnd.equals("View Car"))
         {
-            new ViewCar().setVisible(true);
+            new ViewUserCar().setVisible(true);
         }
         else if(comnd.equals("Check Bill"))
         {
-            new CheckBill().setVisible(true);
+            new UserCheckBill(loggedInUser).setVisible(true);
         }
         else if(comnd.equals("Exit"))
         {
             System.exit(0);
         }
     }
-     public static void main(String[] args) 
-     {
-         UserHomePage user =new UserHomePage();
-         user.updateCarStatus();
-        new UserHomePage().setVisible(true);
-     }
+     
+    public static void main(String[] args) 
+    {
+         String testUser = "testuser";  // Replace this with an actual username for testing
+         new UserHomePage(testUser).setVisible(true);
+    }
+        
+ }
      //Changed by ashish 12-02-2025
-}
+     //Changed by ashish 14/02/2025
