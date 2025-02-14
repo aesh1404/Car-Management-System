@@ -9,19 +9,24 @@
     import java.util.Random;
     import java.util.Date;
     import java.time.LocalDate;
+    import java.time.LocalDateTime;
     import java.time.format.DateTimeFormatter;
+    
     
     public class AddNewBooking extends JFrame implements ActionListener{
 
             Font f,f1;
-            Choice ch1,ch2,ch3,ch4,ch5;
+            Choice ch2,ch3,ch4,ch5;
             JLabel l1,l2,l3,l4,l5,l6,l7,l8,l9,l10,l11,l12,l13,l14,l15,l16;
             JButton b1,b2;
-            JTextField t1,t2,t3,t4,t5,t6,t7,t8,t9;
+            JTextField t1,t2,t3,t4,t5,t6,t7,t8,t9,t10;
             JPanel p1,p2,p3;
-         AddNewBooking()
+            private String loggedInUsername;
+         AddNewBooking(String username)
         {
             super("Add new car Booking");
+            this.loggedInUsername = username;
+            
             setSize(950, 650);
             setLocation(130,40);
             setResizable(false);
@@ -31,27 +36,36 @@
             f1=new Font("Arial", Font.BOLD, 18);
 
 
-            ch1=new Choice();
+            
             ch2=new Choice();
             ch3=new Choice();
             ch4=new Choice();
             ch5=new Choice();
 
-            try {
-                //get the username from user table
-                  ConnectionClass obj=new ConnectionClass();
-                  String q="Select username from user";  //query
-                  ResultSet rest=obj.stmt.executeQuery(q); //pass the q query
-                  while(rest.next())
-                  {
-                      ch1.add(rest.getString("username"));
-                  }
-                  rest.close();
+            t1 = new JTextField(loggedInUsername);
+            t1.setEditable(false);
 
-            } catch (Exception ex) 
+            t2 = new JTextField();
+            t2.setEditable(false);
+
+            t3 = new JTextField();
+            t3.setEditable(false);
+            try 
+            {
+                ConnectionClass obj1 = new ConnectionClass();
+                String q = "SELECT name, phone FROM user WHERE username='" + loggedInUsername + "'";  
+                ResultSet rest = obj1.stmt.executeQuery(q);
+                if (rest.next()) {
+                    t2.setText(rest.getString("name")); // Fetch name
+                    t3.setText(rest.getString("phone")); // Fetch phone number
+                }
+                rest.close();
+            }
+            catch (Exception ex) 
             {
                 ex.printStackTrace();
             }
+
             try {
                 //get the brand name from add_car table (ViewCar) 
                   ConnectionClass obj1=new ConnectionClass();
@@ -95,27 +109,22 @@
             l15=new JLabel("Car Price Pey Day");
             l16=new JLabel("How Many Days?");
 
-
-            t1=new JTextField();
-            t2=new JTextField();
-            t3=new JTextField();
             t4=new JTextField();
             t5=new JTextField();
             t6=new JTextField();
             t7=new JTextField();
             t8=new JTextField();
             t9=new JTextField();
+            t10=new JTextField();
 
-            t1.setEditable(false);
-            t2.setEditable(false);
-            t3.setEditable(false);
             t4.setEditable(false);
             t5.setEditable(false);
             t6.setEditable(false);
             t7.setEditable(false);
             t8.setEditable(false);
             t9.setEditable(false);
-
+            t10.setEditable(false);
+           
             b1=new JButton ("Add Car");
             b2=new JButton("Back");
 
@@ -142,7 +151,7 @@
             l15.setFont(f1);
             l16.setFont(f1);
 
-            ch1.setFont(f1);
+            
             ch2.setFont(f1);
             ch3.setFont(f1);
             ch4.setFont(f1);
@@ -157,6 +166,7 @@
             t7.setFont(f1);
             t8.setFont(f1);
             t9.setFont(f1);
+            t10.setFont(f1);
 
             b1.setFont(f1);
             b2.setFont(f1);
@@ -176,7 +186,7 @@
             l15.setForeground(Color.WHITE);
             l16.setForeground(Color.WHITE);
 
-             ImageIcon img=new ImageIcon(ClassLoader.getSystemResource("Car\\Icons\\UserHomePage.jpg"));//create the object
+            ImageIcon img=new ImageIcon(ClassLoader.getSystemResource("Car\\Icons\\UserHomePage.jpg"));//create the object
             Image i1=img.getImage().getScaledInstance(550,420, Image.SCALE_SMOOTH);//give hight,width
             ImageIcon img1=new ImageIcon(i1);
             l13=new JLabel(img1);
@@ -192,11 +202,11 @@
             p3=new JPanel();// panel3 add all data
             p3.setLayout(new GridLayout(15,2,10,10));
             p3.add(l2);
-            p3.add(ch1);
-            p3.add(l3);
             p3.add(t1);
-            p3.add(l4);
+            p3.add(l3);
             p3.add(t2);
+            p3.add(l4);
+            p3.add(t3);
             p3.add(l5);
             p3.add(ch2);
             p3.add(l6);
@@ -204,19 +214,19 @@
             p3.add(l7);
             p3.add(ch4);
             p3.add(l8);
-            p3.add(t3);
-            p3.add(l9);
             p3.add(t4);
-            p3.add(l10);
+            p3.add(l9);
             p3.add(t5);
-            p3.add(l11);
+            p3.add(l10);
             p3.add(t6);
-            p3.add(l12);
+            p3.add(l11);
             p3.add(t7);
-            p3.add(l14);
+            p3.add(l12);
             p3.add(t8);
-            p3.add(l15);
+            p3.add(l14);
             p3.add(t9);
+            p3.add(l15);
+            p3.add(t10);
             p3.add(l16);
             p3.add(ch5);
             p3.add(b1);
@@ -224,7 +234,7 @@
 
             p1.setBackground(new  Color(39,41,46));//background color
             p2.setBackground(new  Color(39,41,46));
-             p3.setBackground(new  Color(39,41,46));
+            p3.setBackground(new  Color(39,41,46));
 
 
             setLayout(new BorderLayout(0,0));
@@ -234,31 +244,7 @@
 
 
 
-            ch1.addMouseListener(new MouseAdapter()
-            {
-                @Override
-                public void mouseClicked(MouseEvent arg0)//class object 
-                {
-
-                    try {
-                        ConnectionClass obj=new ConnectionClass();//create database connection
-                         String cuser=ch1.getSelectedItem();
-                         String q1="select name, phone from user where username='"+cuser+"'";
-                         ResultSet rest1=obj.stmt.executeQuery(q1);
-
-                         while (rest1.next()) {
-                           t1.setText(rest1.getString("name"));
-                           t2.setText(rest1.getString("phone"));
-
-                        }                                     
-                    }
-
-                 catch (Exception exx) {
-
-                     exx.printStackTrace();
-                    }                       
-                }        
-            });        
+                  
              ch2.addMouseListener(new MouseAdapter()
             {
                 @Override
@@ -326,13 +312,13 @@
                          ResultSet rest1=obj.stmt.executeQuery(q1);
 
                          while (rest1.next()) {
-                           t3.setText(rest1.getString("carname"));
-                           t4.setText(rest1.getString("carsheet"));
-                           t5.setText(rest1.getString("carengine"));
-                           t6.setText(rest1.getString("carcategory"));
-                           t7.setText(rest1.getString("carmileage"));
-                           t8.setText(rest1.getString("carmirror"));
-                           t9.setText(rest1.getString("rent"));
+                           t4.setText(rest1.getString("carname"));
+                           t5.setText(rest1.getString("carsheet"));
+                           t6.setText(rest1.getString("carengine"));
+                           t7.setText(rest1.getString("carcategory"));
+                           t8.setText(rest1.getString("carmileage"));
+                           t9.setText(rest1.getString("carmirror"));
+                           t10.setText(rest1.getString("rent"));
 
                         }                                     
                     }
@@ -365,28 +351,28 @@
             if(e.getSource()==b1)
 
             {
-             String username=ch1.getSelectedItem();
+             String username = loggedInUsername;
              String name=t1.getText();
              String phone=t2.getText();
              String brandname=ch2.getSelectedItem();
              String brandmodel=ch3.getSelectedItem();
              String carno=ch4.getSelectedItem();
-             String carname=t3.getText();
-             String carsheet=t4.getText();         
-             String carengine=t5.getText();
-             String carcategory=t6.getText();
-             String carmileage=t7.getText();
-             String carmirror=t8.getText();
+             String carname=t4.getText();
+             String carsheet=t5.getText();         
+             String carengine=t6.getText();
+             String carcategory=t7.getText();
+             String carmileage=t8.getText();
+             String carmirror=t9.getText();
              int dayscount=Integer.parseInt(ch5.getSelectedItem());
-             int carprice=dayscount*(Integer.parseInt(t9.getText()));
+             int carprice=dayscount*(Integer.parseInt(t10.getText()));
              String booking_status="Booked";
                 Random r=new Random();
                 String booking_id=""+Math.abs(r.nextInt()%100000);
                
                 // Get today's date
-                LocalDate bookingDate = LocalDate.now(); 
+                LocalDateTime bookingDate = LocalDateTime.now(); 
                 // Calculate return date
-                LocalDate returnDate = bookingDate.plusDays(dayscount);
+                LocalDateTime returnDate = bookingDate.plusDays(dayscount);
 
                 // Format dates for MySQL (yyyy-MM-dd)
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -424,9 +410,12 @@
         }    
         public static void main(String[] args) 
         {
-           AddNewBooking booking = new AddNewBooking();
-           booking.updateCarStatus(); // Update car status on startup
+           String loggedInUser = "testUser"; // Replace with real login system logic
+           AddNewBooking booking = new AddNewBooking(loggedInUser);
            booking.setVisible(true);
+           booking.updateCarStatus(); // Call after setting UI
+
         }
         // changed by ashish on 12-02-2025
+        //Small Chnages done by ashish 14/02/2025
     }
