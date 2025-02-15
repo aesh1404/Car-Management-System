@@ -11,6 +11,17 @@ public class UpdateUserDetails extends JFrame implements ActionListener {
     private JLabel lblUsernameValue; // Read-only username label
     private JButton btnUpdate, btnBack;
     private String loggedInUser;
+    private JCheckBox chkConfirm; // Declare checkbox
+
+    private JComboBox<String> cbGender; // Dropdown for gender
+    private JComboBox<String> cbDay, cbMonth, cbYear;
+    private boolean isValidEmail(String email) {
+    String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
+    return email.matches(emailRegex);
+    }
+    private boolean isValidPhone(String phone) {
+    return phone.matches("\\d{10}");
+    }
 
     // ✅ Constructor
     public UpdateUserDetails(String username) {
@@ -61,12 +72,47 @@ public class UpdateUserDetails extends JFrame implements ActionListener {
         tfName = new JTextField(15);
         tfPassword = new JTextField(15);
         tfEmail = new JTextField(15);
-        tfGender = new JTextField(15);
+        //tfGender = new JTextField(15);
+        String[] genders = {"Male", "Female", "Other"};
+        cbGender = new JComboBox<>(genders);
+
+        
         tfPhone = new JTextField(15);
-        tfDOB = new JTextField(15);
+        //tfDOB = new JTextField(15);
+        String[] days = new String[31];
+for (int i = 0; i < 31; i++) {
+    days[i] = String.valueOf(i + 1);
+}
+cbDay = new JComboBox<>(days);
+
+String[] months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+cbMonth = new JComboBox<>(months);
+
+int currentYear = java.time.Year.now().getValue();
+int minYear = currentYear - 100; // Oldest age (100 years)
+int maxYear = currentYear - 18;  // Youngest allowed (18 years)
+
+String[] years = new String[maxYear - minYear + 1];
+for (int i = 0; i < years.length; i++) {
+    years[i] = String.valueOf(minYear + i);
+}
+cbYear = new JComboBox<>(years);
+cbYear.setSelectedItem(String.valueOf(maxYear)); // Default to 18 years old
+cbYear.addActionListener(e -> updateAge());
+
+
+        
+        
+       
+
+
         tfAddress = new JTextField(15);
         tfAge = new JTextField(15);
+        tfAge.setEditable(false);
 
+        chkConfirm = new JCheckBox("I confirm that all the information is correct.");
+        chkConfirm.setFont(labelFont);
+        
         // Buttons
         btnUpdate = new JButton("Update");
         btnUpdate.setBackground(Color.RED);
@@ -109,41 +155,54 @@ public class UpdateUserDetails extends JFrame implements ActionListener {
         panel.add(tfEmail, gbc);
         
         gbc.gridx = 0;
-        gbc.gridy = 4;
+        gbc.gridy = 8;
         panel.add(lGender, gbc);
         gbc.gridx = 1;
-        panel.add(tfGender, gbc);
+        panel.add(cbGender, gbc);
         
         gbc.gridx = 0;
-        gbc.gridy = 5;
+        gbc.gridy = 4;
         panel.add(lPhone, gbc);
         gbc.gridx = 1;
         panel.add(tfPhone, gbc);
         
+        
+
         gbc.gridx = 0;
-        gbc.gridy = 6;
-        panel.add(lDOB, gbc);
-        gbc.gridx = 1;
-        panel.add(tfDOB, gbc);
+gbc.gridy = 7;
+panel.add(lDOB, gbc);
+gbc.gridx = 1;
+JPanel dobPanel = new JPanel();
+dobPanel.add(cbDay);
+dobPanel.add(cbMonth);
+dobPanel.add(cbYear);
+panel.add(dobPanel, gbc);
+
+
         
         gbc.gridx = 0;
-        gbc.gridy = 7;
+        gbc.gridy = 5;
         panel.add(lAddress, gbc);
         gbc.gridx = 1;
         panel.add(tfAddress, gbc);
         
         gbc.gridx = 0;
-        gbc.gridy = 8;
+        gbc.gridy = 6;
         panel.add(lAge, gbc);
         gbc.gridx = 1;
         panel.add(tfAge, gbc);
         
         gbc.gridx = 0;
-        gbc.gridy = 9;
+gbc.gridy = 9;
+gbc.gridwidth = 2;
+panel.add(chkConfirm, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 10;
         gbc.gridwidth = 2;
         panel.add(btnUpdate, gbc);
         
-        gbc.gridy = 10;
+        gbc.gridy = 11;
         panel.add(btnBack, gbc);
         
         // Add components to frame
@@ -163,9 +222,19 @@ public class UpdateUserDetails extends JFrame implements ActionListener {
                 tfName.setText(rest.getString("name"));
                 tfPassword.setText(rest.getString("password"));
                 tfEmail.setText(rest.getString("email"));
-                tfGender.setText(rest.getString("gender"));
+                //tfGender.setText(rest.getString("gender"));
+                cbGender.setSelectedItem(rest.getString("gender"));
                 tfPhone.setText(rest.getString("phone"));
-                tfDOB.setText(rest.getString("DOB"));
+                //tfDOB.setText(rest.getString("DOB"));
+                String dob = rest.getString("DOB"); // Expected format: "DD-MM-YYYY"
+String[] dobParts = dob.split("-");
+if (dobParts.length == 3) {
+    cbDay.setSelectedItem(dobParts[0]);
+    cbMonth.setSelectedItem(dobParts[1]);
+    cbYear.setSelectedItem(dobParts[2]);
+}
+updateAge(); // Update age field
+
                 tfAddress.setText(rest.getString("Address"));
                 tfAge.setText(rest.getString("age"));
             }
@@ -173,6 +242,11 @@ public class UpdateUserDetails extends JFrame implements ActionListener {
             ex.printStackTrace();
         }
     }
+    
+    
+
+
+
 
     // ✅ Action Handling
     public void actionPerformed(ActionEvent e) {
@@ -182,17 +256,54 @@ public class UpdateUserDetails extends JFrame implements ActionListener {
             this.setVisible(false);
         }
     }
-
+    
+    private void updateAge() {
+    int selectedYear = Integer.parseInt((String) cbYear.getSelectedItem());
+    int currentYear = java.time.Year.now().getValue();
+    int age = currentYear - selectedYear;
+    //tfAge.setText(String.valueOf(age));
+    if (age < 18) {
+        JOptionPane.showMessageDialog(this, "You must be at least 18 years old!", "Age Restriction", JOptionPane.ERROR_MESSAGE);
+        cbYear.setSelectedItem(String.valueOf(currentYear - 18)); // Reset to 18 years old
+    } else {
+        tfAge.setText(String.valueOf(age));
+    }
+}
+    
     // ✅ Method to update user details
     private void updateUserDetails() {
+        
+        if (!chkConfirm.isSelected()) {
+        JOptionPane.showMessageDialog(this, "Please confirm that all information is correct before submitting.", "Confirmation Required", JOptionPane.WARNING_MESSAGE);
+        return; // Stop the update if the checkbox is not checked
+    }
         String name = tfName.getText();
         String password = tfPassword.getText();
         String email = tfEmail.getText();
-        String gender = tfGender.getText();
+        //String gender = tfGender.getText();
+        String gender = cbGender.getSelectedItem().toString();
         String phone = tfPhone.getText();
-        String DOB = tfDOB.getText();
+        
+        //String DOB = tfDOB.getText();
+        String DOB = cbDay.getSelectedItem() + "-" + cbMonth.getSelectedItem() + "-" + cbYear.getSelectedItem();
+
+       
+
         String Address = tfAddress.getText();
         String age = tfAge.getText();
+        
+         if (!isValidEmail(email)) {
+        JOptionPane.showMessageDialog(this, "Invalid email format! Please enter a valid email.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+         }
+         
+          // ✅ Phone number validation (must be exactly 10 digits)
+    if (!isValidPhone(phone)) {
+        JOptionPane.showMessageDialog(this, "Invalid phone number! Please enter exactly 10 digits.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+    
+        
 
         try {
             ConnectionClass obj3 = new ConnectionClass();
@@ -200,6 +311,8 @@ public class UpdateUserDetails extends JFrame implements ActionListener {
                         "', gender='" + gender + "', phone='" + phone + "', DOB='" + DOB + "', Address='" + Address + 
                         "', age='" + age + "' WHERE username='" + loggedInUser + "'";
             int aa = obj3.stmt.executeUpdate(q1);
+            
+            
 
             if (aa == 1) {
                 JOptionPane.showMessageDialog(null, "User details successfully updated");
@@ -218,3 +331,4 @@ public class UpdateUserDetails extends JFrame implements ActionListener {
 }
 
 //successfully done by ashish 14/02/2025
+//successfully done by Darhan 15/02/2025
