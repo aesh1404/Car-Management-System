@@ -9,202 +9,164 @@ import java.sql.*;
 import java.util.*;
 
 public class Signup_User implements ActionListener {
-    JLabel l1, l2, l3, l4, l5, l6, l7, l8, l9, l10;
-    JTextField t1, t2, t3, t5,t8, t9;
-    JTextArea t6;
-    JButton b1, b2;
-    JPasswordField pf;
-    JFrame f;
-    JComboBox<String> ch1, ch2, dayBox, monthBox, yearBox; // DOB Selection
+    JLabel title, nameLbl, usernameLbl, passwordLbl, emailLbl, genderLbl, phoneLbl, licenseLbl, dobLbl, ageLbl, addressLbl;
+    JTextField nameField, usernameField, emailField, phoneField, ageField;
+    JTextArea addressField;
+    JPasswordField passwordField;
+    JButton submitBtn, backBtn;
+    JComboBox<String> genderBox, licenseBox, dayBox, monthBox, yearBox;
+    JCheckBox agreementCheckBox;
+    JFrame frame;
 
     Signup_User() {
-        f = new JFrame("Add User Details for SignUP");
-        f.setBackground(Color.white);
-        f.setLayout(null);
+        frame = new JFrame("User SignUp");
+        frame.setSize(900, 650);
+        frame.setLocation(300, 100);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(null);
 
-        l1 = new JLabel();
-        l1.setBounds(0, 0, 840, 600);
-        l1.setLayout(null);
+        JPanel panel = new JPanel();
+        panel.setBounds(50, 30, 780, 550);
+        panel.setBackground(new Color(30, 30, 30)); // Dark Background
+        panel.setBorder(BorderFactory.createLineBorder(new Color(70, 130, 180), 2)); // Stylish Border
+        panel.setLayout(null);
+        frame.add(panel);
 
-        ImageIcon img = new ImageIcon(ClassLoader.getSystemResource("Car/Icons/Signup_user.jpg"));
-        Image i1 = img.getImage().getScaledInstance(840, 600, Image.SCALE_SMOOTH);
-        ImageIcon img1 = new ImageIcon(i1);
-        l1.setIcon(img1);
+        title = new JLabel("User SignUp");
+        title.setFont(new Font("Arial", Font.BOLD, 28));
+        title.setForeground(new Color(70, 130, 180));
+        title.setBounds(280, 10, 300, 40);
+        panel.add(title);
 
-        l2 = new JLabel("Add User Details for SignUP");
-        l2.setBounds(230, 30, 500, 50);
-        l2.setFont(new Font("Arial", Font.BOLD, 30));
-        l2.setForeground(Color.BLUE);
-        l1.add(l2);
-        f.add(l1);
+        nameLbl = createLabel("Name", 50, 80);
+        nameField = createTextField(200, 80);
+        panel.add(nameLbl);
+        panel.add(nameField);
 
-        l3 = new JLabel("Name");
-        l3.setBounds(50, 150, 150, 30);
-        l3.setFont(new Font("Arial", Font.BOLD, 20));
-        l3.setForeground(Color.BLUE);
-        l1.add(l3);
+        usernameLbl = createLabel("Username", 400, 80);
+        usernameField = createTextField(550, 80);
+        panel.add(usernameLbl);
+        panel.add(usernameField);
 
-        t1 = new JTextField();
-        t1.setBounds(200, 150, 150, 30);
-        l1.add(t1);
+        passwordLbl = createLabel("Password", 50, 130);
+        passwordField = new JPasswordField();
+        passwordField.setBounds(200, 130, 150, 30);
+        panel.add(passwordLbl);
+        panel.add(passwordField);
 
-        l4 = new JLabel("Username");
-        l4.setBounds(450, 150, 200, 30);
-        l4.setFont(new Font("Arial", Font.BOLD, 20));
-        l4.setForeground(Color.BLUE);
-        l1.add(l4);
+        emailLbl = createLabel("E-Mail", 400, 130);
+        emailField = createTextField(550, 130);
+        panel.add(emailLbl);
+        panel.add(emailField);
 
-        t2 = new JTextField();
-        t2.setBounds(600, 150, 150, 30);
-        l1.add(t2);
+        genderLbl = createLabel("Gender", 50, 180);
+        genderBox = new JComboBox<>(new String[]{"Male", "Female", "Other"});
+        genderBox.setBounds(200, 180, 150, 30);
+        panel.add(genderLbl);
+        panel.add(genderBox);
 
-        l5 = new JLabel("Password");
-        l5.setBounds(50, 200, 100, 30);
-        l5.setFont(new Font("Arial", Font.BOLD, 20));
-        l5.setForeground(Color.BLUE);
-        l1.add(l5);
+        phoneLbl = createLabel("Phone", 400, 180);
+        phoneField = createTextField(550, 180);
+        panel.add(phoneLbl);
+        panel.add(phoneField);
 
-        pf = new JPasswordField();
-        pf.setBounds(200, 200, 150, 30);
-        l1.add(pf);
+        licenseLbl = createLabel("Driving License", 50, 230);
+        licenseBox = new JComboBox<>(new String[]{"Yes", "No"});
+        licenseBox.setBounds(200, 230, 150, 30);
+        panel.add(licenseLbl);
+        panel.add(licenseBox);
 
-        l6 = new JLabel("E-Mail");
-        l6.setBounds(450, 200, 200, 30);
-        l6.setFont(new Font("Arial", Font.BOLD, 20));
-        l6.setForeground(Color.BLUE);
-        l1.add(l6);
-
-        t3 = new JTextField();
-        t3.setBounds(600, 200, 150, 30);
-        l1.add(t3);
-
-        l7 = new JLabel("Gender");
-        l7.setBounds(50, 250, 140, 30);
-        l7.setFont(new Font("Arial", Font.BOLD, 20));
-        l7.setForeground(Color.BLUE);
-        l1.add(l7);
-
-        ch1 = new JComboBox<>(new String[]{"Male", "Female", "Other"});
-        ch1.setBounds(200, 250, 150, 30);
-        l1.add(ch1);
-
-        l8 = new JLabel("Phone");
-        l8.setBounds(450, 250, 100, 30);
-        l8.setFont(new Font("Arial", Font.BOLD, 20));
-        l8.setForeground(Color.BLUE);
-        l1.add(l8);
-
-        t5 = new JTextField();
-        t5.setBounds(600, 250, 150, 30);
-        l1.add(t5);
-
-        l9 = new JLabel("Driving Licence");
-        l9.setBounds(50, 300, 160, 30);
-        l9.setFont(new Font("Arial", Font.BOLD, 20));
-        l9.setForeground(Color.BLUE);
-        l1.add(l9); 
-
-        ch2 = new JComboBox<>(new String[]{"Yes", "No"});
-        ch2.setBounds(200, 300, 150, 30);
-        l1.add(ch2);
-        
-        // Address Label
-        JLabel l11 = new JLabel("Address");
-        l11.setBounds(50, 400, 100, 30);
-        l11.setFont(new Font("Arial", Font.BOLD, 20));
-        l11.setForeground(Color.BLUE);
-        l1.add(l11);
-
-        // Address TextArea
-        t6 = new JTextArea();
-t6.setBounds(200, 400, 550, 60);
-t6.setLineWrap(true);
-t6.setWrapStyleWord(true);
-l1.add(t6);
-
-
-        //  **Custom DOB Picker (Dropdowns for Day, Month, Year)**
-        l10 = new JLabel("DOB");
-        l10.setBounds(450, 300, 200, 30);
-        l10.setFont(new Font("Arial", Font.BOLD, 20));
-        l10.setForeground(Color.BLUE);
-        l1.add(l10);
-
-        // Day Dropdown (1-31)
+        dobLbl = createLabel("DOB", 400, 220);
         dayBox = new JComboBox<>();
-        for (int i = 1; i <= 31; i++) {
-            dayBox.addItem(String.valueOf(i));
-        }
-        dayBox.setBounds(600, 300, 50, 30);
-        l1.add(dayBox);
+        for (int i = 1; i <= 31; i++) dayBox.addItem(String.valueOf(i));
+        dayBox.setBounds(550, 230, 50, 30);
+        panel.add(dayBox);
+        panel.add(dobLbl);
 
-        // Month Dropdown (Jan-Dec)
-        monthBox = new JComboBox<>(new String[]{
-                "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-                "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"});
-        monthBox.setBounds(660, 300, 60, 30);
-        l1.add(monthBox);
+        monthBox = new JComboBox<>(new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"});
+        monthBox.setBounds(610, 230, 60, 30);
+        panel.add(monthBox);
 
-        // Year Dropdown (1900 - Current Year)
         yearBox = new JComboBox<>();
         int currentYear = LocalDate.now().getYear();
-        for (int i = currentYear; i >= 1900; i--) {
-            yearBox.addItem(String.valueOf(i));
-        }
-        yearBox.setBounds(730, 300, 70, 30);
-        l1.add(yearBox);
+        for (int i = currentYear; i >= 1900; i--) yearBox.addItem(String.valueOf(i));
+        yearBox.setBounds(680, 230, 70, 30);
+        panel.add(yearBox);
 
-        l10 = new JLabel("Age");
-        l10.setBounds(50, 350, 100, 30);
-        l10.setFont(new Font("Arial", Font.BOLD, 20));
-        l10.setForeground(Color.BLUE);
-        l1.add(l10);
-
-        t9 = new JTextField();
-        t9.setBounds(200, 350, 150, 30);
-        t9.setEditable(false); // Age should be auto-calculated
-        l1.add(t9);
-
-        // **Automatically Calculate Age When DOB is Selected**
+        ageLbl = createLabel("Age", 50, 280);
+        ageField = createTextField(200, 280);
+        ageField.setEditable(false);
+        panel.add(ageLbl);
+        panel.add(ageField);
+         // **Automatically Calculate Age When DOB is Selected**
         ActionListener dobListener = e -> calculateAge();
         dayBox.addActionListener(dobListener);
         monthBox.addActionListener(dobListener);
         yearBox.addActionListener(dobListener);
 
-        b1 = new JButton("Submit");
-        b2 = new JButton("Back");
+        
+        addressLbl = createLabel("Address", 50, 330);
+        addressField = new JTextArea();
+        addressField.setBounds(200, 330, 550, 60);
+        addressField.setLineWrap(true);
+        addressField.setWrapStyleWord(true);
+        panel.add(addressLbl);
+        panel.add(addressField);
 
-        b1.setBounds(250, 500, 150, 40);
-        b2.setBounds(450, 500, 150, 40);
-        b1.setBackground(Color.RED);
-        b2.setBackground(Color.BLACK);
+        agreementCheckBox = new JCheckBox("I declare that all information provided is true");
+        agreementCheckBox.setBounds(200, 410, 400, 30);
+        panel.add(agreementCheckBox);
 
-        b1.setForeground(Color.WHITE);
-        b2.setForeground(Color.RED);
+        submitBtn = new JButton("Submit");
+        submitBtn.setBounds(250, 460, 150, 40);
+        submitBtn.setBackground(new Color(70, 130, 180)); // Steel Blue
+        submitBtn.setForeground(Color.WHITE);
+        submitBtn.setFont(new Font("Arial", Font.BOLD, 16));
+        submitBtn.setFocusPainted(false);
+        panel.add(submitBtn);
 
-        b1.addActionListener(this);
-        b2.addActionListener(this);
+        backBtn = new JButton("Back");
+        backBtn.setBounds(450, 460, 150, 40);
+        backBtn.setBackground(Color.BLACK);
+        backBtn.setForeground(Color.RED);
+        backBtn.setFont(new Font("Arial", Font.BOLD, 16));
+        backBtn.setFocusPainted(false);
+        panel.add(backBtn);
+        
+        submitBtn.addActionListener(this);
+        backBtn.addActionListener(this);
 
-        l1.add(b1);
-        l1.add(b2);
-
-        f.setVisible(true);
-        f.setSize(840, 600);
-        f.setLocation(300, 100);
+        frame.setVisible(true);
     }
 
+    private JLabel createLabel(String text, int x, int y) {
+        JLabel label = new JLabel(text);
+        label.setBounds(x, y, 140, 30);
+        label.setFont(new Font("Arial", Font.BOLD, 18));
+        label.setForeground(new Color(135, 206, 250)); // Light Blue
+        return label;
+    }
+
+    private JTextField createTextField(int x, int y) {
+        JTextField textField = new JTextField();
+        textField.setBounds(x, y, 150, 30);
+        return textField;
+    }
+
+
+    
     public void actionPerformed(ActionEvent e) {
-    if (e.getSource() == b1) {
-        String name = t1.getText();
-        String username = t2.getText();
-        String password = new String(pf.getPassword());
-        String email = t3.getText().trim();
-         String phone = t5.getText().trim();
-        String gender = (String) ch1.getSelectedItem();
-        String age = t9.getText();
+    if (e.getSource() == submitBtn) {
+        String name = nameField.getText();
+        String username = usernameField.getText();
+        String password = new String(passwordField.getPassword());
+        String email = emailField.getText().trim();
+         String phone = phoneField.getText().trim();
+        String gender = (String) genderBox.getSelectedItem();
+        String age = ageField.getText();
          String DOB = dayBox.getSelectedItem() + "-" + monthBox.getSelectedItem() + "-" + yearBox.getSelectedItem();     
-        String drivingLicense = (String) ch2.getSelectedItem();
-        String address = t6.getText().trim();
+        String license = (String) licenseBox.getSelectedItem();
+        String address = addressField.getText().trim();
 
       // Ensure DOB is selected
         if (dayBox.getSelectedItem() == null || monthBox.getSelectedItem() == null || yearBox.getSelectedItem() == null) {
@@ -224,7 +186,7 @@ l1.add(t6);
         String user_id = "" + Math.abs(r.nextInt() % 100000);
 
          //Driving License Validation
-        if (!drivingLicense.equals("Yes")) {
+        if (!license.equals("Yes")) {
             JOptionPane.showMessageDialog(null, "You must have a Driving License to sign up.");
             return;
         }
@@ -240,19 +202,30 @@ l1.add(t6);
             JOptionPane.showMessageDialog(null, "Invalid Phone Number! Enter exactly 10 digits.");
             return;
         }
-        
+        if (e.getSource() == submitBtn) {
+            if (!agreementCheckBox.isSelected()) {
+                JOptionPane.showMessageDialog(null, "You must agree that all information is true before submitting.");
+                return;
+            }
+
+            JOptionPane.showMessageDialog(null, "Form Submitted Successfully!");
+            frame.setVisible(false);
+        } else if (e.getSource() == backBtn) {
+            new Login();
+            frame.setVisible(false);
+        }
         try {
             ConnectionClass obj = new ConnectionClass();
-            String q = "INSERT INTO user VALUES('" + user_id + "','" + name + "','" + username + "','" + password + "','" + email + "','" + phone + "','" + gender + "','" + age + "','" + DOB + "','" + drivingLicense + "','" + address + "')";
+            String q = "INSERT INTO user VALUES('" + user_id + "','" + name + "','" + username + "','" + password + "','" + email + "','" + gender + "','" + phone + "','" + license + "','" + DOB + "','" + address + "','" + age + "')";
             obj.stmt.executeUpdate(q);
             JOptionPane.showMessageDialog(null, "Details successfully inserted.");
-            f.setVisible(false);
+            frame.setVisible(false);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-    } else if (e.getSource() == b2) {
+    } else if (e.getSource() == backBtn) {
         new Login();
-        f.setVisible(false);
+        frame.setVisible(false);
     }
 }
 
@@ -268,9 +241,9 @@ l1.add(t6);
             LocalDate today = LocalDate.now();
             int age = Period.between(dob, today).getYears();
 
-            t9.setText(String.valueOf(age)); // Auto-fill age
+            ageField.setText(String.valueOf(age)); // Auto-fill age
         } catch (Exception e) {
-            t9.setText("");
+            ageField.setText("");
         }
         
     }
@@ -279,4 +252,5 @@ l1.add(t6);
         new Signup_User();
     }
 }
-//successfully done by shreya 2/9/2025  
+//successfully done by shreya 2/9/2025 
+//sucessfully done by Ashish for front end 26/02/2025 Shiv ratri jai mahakal 🙏
