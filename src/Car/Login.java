@@ -7,97 +7,104 @@ import java.sql.*;
 
 public class Login implements ActionListener {
 
-    JLabel l1, l2, l3, l4, l5;
+    JLabel l2, l3, l4, l5;
     JTextField t1;
     JButton b1, b2;
     JPasswordField pf;
     JFrame f;
     Choice ch1;
-        public static String loggedInUser = null;  //  Store the logged-in user
+    public static String loggedInUser = null;
 
-    
     public Login() {
-        // Create Frame
         f = new JFrame("Login Page");
-        f.setLayout(null);
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.setSize(800, 500);
+        f.setMinimumSize(new Dimension(600, 400)); // Prevents it from getting too small
+        f.setLocationRelativeTo(null);
+        f.setLayout(new GridBagLayout());
+        f.getContentPane().setBackground(new Color(30, 30, 60));
 
-        // Background Image
-        l1 = new JLabel();
-        l1.setBounds(0, 0, 580, 350);
-        l1.setLayout(null);
-        
-        ImageIcon img = new ImageIcon(ClassLoader.getSystemResource("Car/Icons/Login_Page.jpeg"));
-        Image i1 = img.getImage().getScaledInstance(580, 350, Image.SCALE_SMOOTH);
-        l1.setIcon(new ImageIcon(i1));
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
 
         // Title
         l2 = new JLabel("Login Account");
-        l2.setBounds(190, 22, 500, 50);
-        l2.setFont(new Font("Arial", Font.BOLD, 30));
-        l2.setForeground(Color.GREEN);
-        l1.add(l2);
-        f.add(l1);
+        l2.setFont(new Font("Arial", Font.BOLD, 28));
+        l2.setForeground(Color.ORANGE);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
+        f.add(l2, gbc);
 
-        // Username Label & Text Field
-        l3 = new JLabel("Username");
-        l3.setBounds(120, 135, 150, 30);
-        l3.setFont(new Font("Arial", Font.BOLD, 20));
-        l3.setForeground(Color.WHITE);
-        l1.add(l3);
-
-        t1 = new JTextField();
-        t1.setBounds(320, 135, 150, 30);
-        t1.setFont(new Font("Arial", Font.BOLD, 15));
-        l1.add(t1);
-
-        // Password Label & Field
-        l4 = new JLabel("Password");
-        l4.setBounds(120, 185, 150, 30);
-        l4.setFont(new Font("Arial", Font.BOLD, 20));
-        l4.setForeground(Color.WHITE);
-        l1.add(l4);
-
-        pf = new JPasswordField();
-        pf.setBounds(320, 185, 150, 30);
-        pf.setFont(new Font("Arial", Font.BOLD, 15));
-        l1.add(pf);
-
-        // Account Type (Admin/User)
-        l5 = new JLabel("Login Account");
-        l5.setBounds(120, 90, 150, 30);
-        l5.setFont(new Font("Arial", Font.BOLD, 15));
+        // Account Type Label
+        l5 = new JLabel("Select Account:");
         l5.setForeground(Color.WHITE);
-        l1.add(l5);
+        gbc.gridwidth = 1;
+        gbc.gridy++;
+        gbc.anchor = GridBagConstraints.LINE_END;
+        f.add(l5, gbc);
 
+        // Account Type Choice
         ch1 = new Choice();
         ch1.add("Admin");
         ch1.add("User");
-        ch1.setBounds(320, 90, 150, 30);
-        ch1.setFont(new Font("Arial", Font.BOLD, 15));
-        l1.add(ch1);
+        gbc.gridx = 1;
+        gbc.anchor = GridBagConstraints.LINE_START;
+        f.add(ch1, gbc);
 
-        // Buttons
+        // Username Label
+        gbc.gridx = 0;
+        gbc.gridy++;
+        l3 = new JLabel("Username:");
+        l3.setForeground(Color.WHITE);
+        gbc.anchor = GridBagConstraints.LINE_END;
+        f.add(l3, gbc);
+
+        // Username Field
+        gbc.gridx = 1;
+        t1 = new JTextField(15);
+        t1.setPreferredSize(new Dimension(200, 30));
+        f.add(t1, gbc);
+
+        // Password Label
+        gbc.gridx = 0;
+        gbc.gridy++;
+        l4 = new JLabel("Password:");
+        l4.setForeground(Color.WHITE);
+        gbc.anchor = GridBagConstraints.LINE_END;
+        f.add(l4, gbc);
+
+        // Password Field
+        gbc.gridx = 1;
+        pf = new JPasswordField(15);
+        pf.setPreferredSize(new Dimension(200, 30));
+        f.add(pf, gbc);
+
+        // Login Button
+        gbc.gridx = 0;
+        gbc.gridy++;
+        gbc.anchor = GridBagConstraints.LINE_END;
         b1 = new JButton("Login");
-        b2 = new JButton("User Signup");
-
-        b1.setBounds(120, 235, 150, 40);
-        b2.setBounds(320, 235, 150, 40);
-        b1.setBackground(Color.BLACK);
-        b2.setBackground(Color.BLACK);
+        b1.setBackground(new Color(50, 150, 255));
         b1.setForeground(Color.WHITE);
-        b2.setForeground(Color.RED);
+        b1.setPreferredSize(new Dimension(120, 40));
+        f.add(b1, gbc);
+
+        // Signup Button
+        gbc.gridx = 1;
+        gbc.anchor = GridBagConstraints.LINE_START;
+        b2 = new JButton("User Signup");
+        b2.setBackground(new Color(255, 50, 50));
+        b2.setForeground(Color.WHITE);
+        b2.setPreferredSize(new Dimension(120, 40));
+        f.add(b2, gbc);
 
         b1.addActionListener(this);
         b2.addActionListener(this);
 
-        l1.add(b1);
-        l1.add(b2);
-
-        // Show Frame
         f.setVisible(true);
-        f.setSize(580, 360);
-        f.setLocation(300, 100);
-        f.setResizable(false);
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -119,36 +126,26 @@ public class Login implements ActionListener {
                 pstmt.setString(2, password);
                 ResultSet rs = pstmt.executeQuery();
 
-                if (rs.next()) 
-                {
-                        loggedInUser = username;  // Save the logged-in user's name
-
-                    f.dispose(); // Close Login Page
-                    if (account.equals("Admin"))
-                    {
+                if (rs.next()) {
+                    loggedInUser = username;
+                    f.dispose();
+                    if (account.equals("Admin")) {
                         new AdminHomePage().setVisible(true);
-                    } 
-                    else
-                    {
+                    } else {
                         new UserHomePage(username).setVisible(true);
                     }
-                } 
-                else 
-                {
+                } else {
                     JOptionPane.showMessageDialog(f, "Invalid Username or Password", "Login Failed", JOptionPane.ERROR_MESSAGE);
                 }
-            }
-            catch (Exception ex) 
-            {
+            } catch (Exception ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(f, "Database Error", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
 
         if (e.getSource() == b2) {
-            f.dispose(); // Close Login Page
+            f.dispose();
             new Signup_User();
-            f.setVisible(false);
         }
     }
 
@@ -156,4 +153,5 @@ public class Login implements ActionListener {
         new Login();
     }
 }
-// change by shreya 14/2/25  
+//Changed by shreya 14/2
+//sucessfully done by Ashish for front end 26/02/2025 Shiv ratri jai mahakal 🙏
