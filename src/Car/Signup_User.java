@@ -1,4 +1,4 @@
-package Car;
+package car;
 
 import java.awt.*;
 import javax.swing.*;
@@ -13,16 +13,24 @@ import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-
-public class Signup_User implements ActionListener {
-    JLabel titleLabel, nameLbl, usernameLbl, passwordLbl, emailLbl, genderLbl, phoneLbl, licenseLbl, dobLbl, ageLbl, addressLbl,stateLbl, cityLbl, countryLbl,passwordStrengthLabel;
+public class Signup_User extends javax.swing.JFrame implements ActionListener {
+    JLabel titleLabel, nameLbl, usernameLbl, passwordLbl, emailLbl, genderLbl, phoneLbl, licenseLbl, dobLbl, ageLbl, addressLbl,stateLbl, cityLbl, countryLbl,passwordStrengthLabel,otpLbl;
     JTextField nameField, usernameField, emailField, phoneField, ageField,countryField,addressField;
     JPasswordField passwordField;
     JButton submitBtn, backBtn;
     JComboBox<String> genderBox, licenseBox, dayBox, monthBox, yearBox,stateBox, cityBox;
     JCheckBox agreementCheckBox;
     JFrame frame;
-
+    
+    JButton sendOTPButton = new JButton("Send OTP");
+    JTextField otpField = new JTextField();
+    JButton verifyOTPButton = new JButton("Verify OTP");
+     
+    
+    public static final String ACCOUNT_SID = "xxxxx";
+    public static final String AUTH_TOKEN = "xxxxx";
+    public static final String TWILIO_PHONE_NUMBER = "+91xxx";
+    
     Signup_User() {
         frame = new JFrame("User SignUp");
         frame.setSize(800, 600);
@@ -103,6 +111,23 @@ public class Signup_User implements ActionListener {
         phoneField = createTextField(550, 170, 150);
         panel.add(phoneLbl);
         panel.add(phoneField);
+        
+        sendOTPButton.setBounds(400, 200, 100, 30); 
+        otpLbl = createLabel("Enter OTP:", 460, 230);
+        otpField.setBounds(550, 230, 80, 30);
+        verifyOTPButton.setBounds(640, 230, 100, 30);
+        panel.add(sendOTPButton);
+        panel.add(otpLbl);
+        panel.add(otpField);
+        panel.add(verifyOTPButton);
+        
+        sendOTPButton.addActionListener(new ActionListener() 
+        {
+            public void actionPerformed(ActionEvent e) 
+            {
+                JOptionPane.showMessageDialog(null, "This feature is under processing....");
+            }
+        });
 
         // Driving License
         licenseLbl = createLabel("Driving License", 50, 220);
@@ -125,7 +150,7 @@ public class Signup_User implements ActionListener {
         // Age Field
         ageLbl = createLabel("Age", 450, 270);
         panel.add(ageLbl);
-        ageField = createTextField(550, 270, 80);
+        ageField = createTextField(500, 270, 80);
         ageField.setEditable(false);
         panel.add(ageField);
 
@@ -198,6 +223,8 @@ public class Signup_User implements ActionListener {
         backBtn.addActionListener(this);
 
         frame.setVisible(true);
+        
+                
     }
 
      private JLabel createLabel(String text, int x, int y) {
@@ -326,12 +353,6 @@ public class Signup_User implements ActionListener {
 private String getPasswordStrength(String password) {
     int score = 0;
 
-    // Password criteria: 
-    // 1. At least 8 characters
-    // 2. Contains lowercase letters
-    // 3. Contains uppercase letters
-    // 4. Contains digits
-    // 5. Contains special characters
 
     if (password.length() >= 8) score++;
     if (password.matches(".*[a-z].*")) score++;  // Contains at least one lowercase letter
@@ -345,6 +366,7 @@ private String getPasswordStrength(String password) {
     else return "Strong";
 }
 
+    
     
     public void actionPerformed(ActionEvent e) 
     {
@@ -361,7 +383,9 @@ private String getPasswordStrength(String password) {
         String state = (String) stateBox.getSelectedItem();
         String city = (String) cityBox.getSelectedItem();
         String country = countryField.getText();
+        
 
+        
         // Password Validation
         boolean hasUppercase = password.matches(".*[A-Z].*");
         boolean hasLowercase = password.matches(".*[a-z].*");
@@ -458,4 +482,9 @@ private String getPasswordStrength(String password) {
 //successfully done by shreya 2/9/2025 
 //sucessfully done by Ashish for front end 26/02/2025 Shiv ratri jai mahakal 🙏
 //sucessfully done by Ashish If state selected auto select cities 15/03/2025 (Hint:-You need to change in user table like need to add column nothing else.)
-//sucessfully done by Ashish password validation also strength of password:weak,medium,strong 15/03/2025
+//sucessfully done by Ashish password validation also strength of password:weak,medium,strong 13/04/2025
+
+// Account SID:- AC3f121b77d52516b7bb0902babb5ac8e6
+// Auth Token:- 5385569682d95ea65cf3d73acef0b4aa
+
+//Under maintainance by Ashish Real SMS OTP from Phone number 13/04/2025
