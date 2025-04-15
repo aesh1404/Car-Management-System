@@ -2,68 +2,58 @@ package Car;
 
 import java.awt.*;
 import javax.swing.*;
-import java.awt.event.*;
 
 public class AboutUs {
 
     JFrame f;
     JLabel l1;
-    JButton learnMore;
+    JButton loginBtn;
 
-    public AboutUs() 
-    {
+    public AboutUs() {
         f = new JFrame("About Us - Car Rental System");
         f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        f.setSize(900, 500);
+       f.setExtendedState(JFrame.MAXIMIZED_BOTH);
         f.setLocationRelativeTo(null);
 
-        // 🌈 Gradient Background Panel
-        JPanel gradientPanel = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                Graphics2D g2d = (Graphics2D) g;
-                int w = getWidth();
-                int h = getHeight();
-                Color color1 = new Color(240, 248, 255);  // Light Blue
-                Color color2 = new Color(224, 255, 255);  // Pale Turquoise
-                GradientPaint gp = new GradientPaint(0, 0, color1, w, h, color2);
-                g2d.setPaint(gp);
-                g2d.fillRect(0, 0, w, h);
-            }
-        };
-        gradientPanel.setLayout(new BorderLayout());
-        
-        // LEFT SIDE - Text Content
+        // Main background panel (white)
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel.setBackground(Color.WHITE);
+
+        // LEFT SIDE - Text Section
         JPanel leftPanel = new JPanel();
-        leftPanel.setBackground(new Color(240, 240, 240));
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
-        leftPanel.setBorder(BorderFactory.createEmptyBorder(40, 40, 40, 20));
+        leftPanel.setBackground(Color.WHITE);
+        leftPanel.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 30));
 
         JLabel heading = new JLabel("About Us");
-        heading.setFont(new Font("SansSerif", Font.BOLD, 28));
-        heading.setForeground(new Color(0, 128, 192)); 
+        heading.setFont(new Font("SansSerif", Font.BOLD, 30));
+        heading.setForeground(new Color(30, 144, 255)); // Dodger Blue
         heading.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        JLabel welcome = new JLabel("Welcome To EasyCar Rentals");
-        welcome.setFont(new Font("SansSerif", Font.BOLD, 20));
+         JLabel welcome = new JLabel("Welcome to Rentify Users");
+        welcome.setFont(new Font("Segoe UI", Font.BOLD, 24));
         welcome.setAlignmentX(Component.LEFT_ALIGNMENT);
-        welcome.setBorder(BorderFactory.createEmptyBorder(20, 0, 10, 0));
+        welcome.setBorder(BorderFactory.createEmptyBorder(20, 0, 15, 0));
 
-        JLabel description = new JLabel("<html><p style='width:350px;'>Discover secure and seamless car rentals with EasyCar. From everyday rides to long trips, our fleet and expert support ensure a smart, smooth journey every time.</p></html>");
-        description.setFont(new Font("SansSerif", Font.PLAIN, 16));
+        JLabel description = new JLabel("<html><div style='width:500px;'>"
+                + "Rentify Rentals offers quick and reliable car rental services. "
+        + "Choose from a wide range of cars for daily use, business trips, or vacations. "
+        + "Book online and enjoy a smooth ride with 24/7 support."   + "</div></html>");
+        description.setFont(new Font("Segoe UI", Font.PLAIN, 18));
         description.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        learnMore = new JButton("LOGIN");
-        learnMore.setFont(new Font("SansSerif", Font.BOLD, 14));
-        learnMore.setAlignmentX(Component.LEFT_ALIGNMENT);
-        learnMore.setBackground(new Color(0, 128, 192)); // Blue button
-        learnMore.setForeground(Color.WHITE);
-        learnMore.setFocusPainted(false);
-        learnMore.setPreferredSize(new Dimension(140, 40));
-        learnMore.setMaximumSize(new Dimension(160, 40));
 
-        learnMore.addActionListener(e -> {
+        loginBtn = new JButton("LOGIN");
+        loginBtn.setFont(new Font("SansSerif", Font.BOLD, 14));
+        loginBtn.setBackground(new Color(30, 144, 255));
+        loginBtn.setForeground(Color.WHITE);
+        loginBtn.setFocusPainted(false);
+        loginBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
+        loginBtn.setPreferredSize(new Dimension(140, 40));
+        loginBtn.setMaximumSize(new Dimension(160, 40));
+        loginBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        loginBtn.addActionListener(e -> {
             f.dispose();
             new Login();
         });
@@ -71,47 +61,63 @@ public class AboutUs {
         leftPanel.add(heading);
         leftPanel.add(welcome);
         leftPanel.add(description);
-        leftPanel.add(Box.createRigidArea(new Dimension(0, 20)));
-        leftPanel.add(learnMore);
+        leftPanel.add(Box.createRigidArea(new Dimension(0, 25)));
+        
 
-        // RIGHT SIDE - Image
+        // RIGHT SIDE - Image Section
         JPanel rightPanel = new JPanel();
-        rightPanel.setBackground(new Color(240, 240, 240));
-        rightPanel.setBorder(BorderFactory.createEmptyBorder(40, 20, 40, 40));
+        rightPanel.setBackground(Color.WHITE);
+        rightPanel.setBorder(BorderFactory.createEmptyBorder(50, 30, 50, 50));
 
-        ImageIcon img = new ImageIcon(ClassLoader.getSystemResource("Car//Icons//AboutUs.jpg"));
-        Image i1 = img.getImage().getScaledInstance(325, 250, Image.SCALE_SMOOTH);
-        ImageIcon img1 = new ImageIcon(i1);
-        l1 = new JLabel(img1);
-        rightPanel.add(l1);
+        try {
+            ImageIcon img = new ImageIcon(ClassLoader.getSystemResource("Car/Icons/AboutUs.jpg"));
+            Image scaledImg = img.getImage().getScaledInstance(350, 250, Image.SCALE_SMOOTH);
+            l1 = new JLabel(new ImageIcon(scaledImg));
+            rightPanel.add(l1);
+        } catch (Exception e) {
+            l1 = new JLabel("Image not found");
+            l1.setForeground(Color.RED);
+            rightPanel.add(l1);
+        }
 
-       // Combine both sides
-        gradientPanel.add(leftPanel, BorderLayout.WEST);
-        gradientPanel.add(rightPanel, BorderLayout.EAST);
+        
+// Footer - "Do you want login?" and LOGIN button aligned right
+JPanel bottomPanel = new JPanel(new BorderLayout());
+bottomPanel.setBackground(Color.WHITE);
+bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 15)); // center with 10px gap
 
-        // BOTTOM PANEL - "Do you want login"
-        JPanel bottomPanel = new JPanel();
-        bottomPanel.setOpaque(false); // transparent to show gradient background
-        bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 10)); // centered, with vertical padding
+// Left label
+JLabel bottomText = new JLabel("Need an account? Click LOGIN to continue.");
+bottomText.setFont(new Font("SansSerif", Font.BOLD, 18));
+bottomText.setForeground(new Color(0, 128, 192));
+bottomPanel.add(bottomText, BorderLayout.WEST);
 
-        JLabel bottomLabel = new JLabel("Do you want login?");
-        bottomLabel.setFont(new Font("SansSerif", Font.BOLD, 20));
-        bottomLabel.setForeground(new Color(0, 128, 192));
+// Right-aligned button
+loginBtn = new JButton("LOGIN");
+loginBtn.setFont(new Font("SansSerif", Font.BOLD, 14));
+loginBtn.setBackground(new Color(30, 144, 255));
+loginBtn.setForeground(Color.WHITE);
+loginBtn.setFocusPainted(false);
+loginBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+loginBtn.setPreferredSize(new Dimension(100, 35));
+loginBtn.addActionListener(e -> {
+    f.dispose();
+    new Login();
+});
+bottomPanel.add(loginBtn, BorderLayout.EAST);
 
-        bottomPanel.add(bottomLabel);
+        // Add to main panel
+        mainPanel.add(leftPanel, BorderLayout.WEST);
+        mainPanel.add(rightPanel, BorderLayout.EAST);
+        mainPanel.add(bottomPanel, BorderLayout.SOUTH);
+        
 
-        // Add bottom panel to SOUTH of the gradientPanel
-        gradientPanel.add(bottomPanel, BorderLayout.SOUTH);
-
-        // Final setup
-        f.setContentPane(gradientPanel);
+        f.setContentPane(mainPanel);
         f.setVisible(true);
-        
-        
     }
 
-    public static void main(String[] args) 
-    {
+    public static void main(String[] args) {
         new AboutUs();
     }
 }
+//successfully done About Us by shreya 15/04/2025 
