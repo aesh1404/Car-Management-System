@@ -1,4 +1,5 @@
-package car;
+package Car;
+
 
 import java.awt.*;
 import javax.swing.*;
@@ -27,11 +28,12 @@ public class Signup_User extends javax.swing.JFrame implements ActionListener {
     JButton verifyOTPButton = new JButton("Verify OTP");
      
     
-    public static final String ACCOUNT_SID = "xxxxx";
-    public static final String AUTH_TOKEN = "xxxxx";
-    public static final String TWILIO_PHONE_NUMBER = "+91xxx";
+    //public static final String ACCOUNT_SID = "AC3f121b77d52516b7bb0902babb5ac8e6";
+    //public static final String AUTH_TOKEN = "5385569682d95ea65cf3d73acef0b4aa";
+    //public static final String TWILIO_PHONE_NUMBER = "+917046332302";
     
-    Signup_User() {
+    public Signup_User() 
+    {
         frame = new JFrame("User SignUp");
         frame.setSize(800, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -122,6 +124,14 @@ public class Signup_User extends javax.swing.JFrame implements ActionListener {
         panel.add(verifyOTPButton);
         
         sendOTPButton.addActionListener(new ActionListener() 
+        {
+            public void actionPerformed(ActionEvent e) 
+            {
+                JOptionPane.showMessageDialog(null, "This feature is under processing....");
+            }
+        });
+        
+        verifyOTPButton.addActionListener(new ActionListener() 
         {
             public void actionPerformed(ActionEvent e) 
             {
@@ -385,6 +395,17 @@ private String getPasswordStrength(String password) {
         String country = countryField.getText();
         
 
+        // Username and Name non-empty check
+        if (username.isEmpty() || name.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Username and Name cannot be empty.");
+            return;
+        }
+
+        // Address validation
+        if (address.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please enter your address.");
+            return;
+        }
         
         // Password Validation
         boolean hasUppercase = password.matches(".*[A-Z].*");
@@ -486,5 +507,6 @@ private String getPasswordStrength(String password) {
 
 // Account SID:- AC3f121b77d52516b7bb0902babb5ac8e6
 // Auth Token:- 5385569682d95ea65cf3d73acef0b4aa
-
 //Under maintainance by Ashish Real SMS OTP from Phone number 13/04/2025
+
+//successfully done add validation of name and username by Ashish 15/04/2025
