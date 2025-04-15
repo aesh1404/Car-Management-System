@@ -5,16 +5,17 @@ import java.sql.*;
 public class ConnectionClass 
 {
     
-    Connection con;
-    Statement stmt;
+    public Connection con;
+    public Statement stmt;
 
-    ConnectionClass()
+    public ConnectionClass()
     {
         try 
         {
             Class.forName("com.mysql.cj.jdbc.Driver");
             con=DriverManager.getConnection("jdbc:mysql://localhost:3306/cms","root","@esh1404");
             stmt=con.createStatement();
+            
         }
         catch (Exception ex) 
         {
@@ -24,5 +25,10 @@ public class ConnectionClass
     public static void main(String[] args)
     {
         new ConnectionClass();
+        
+        new AboutUs();
     }
-}
+   
+ }
+
+//successfully done add about us as main page by Ashish 15/04/2025 (Hint:- You need to set project's property also.) 
